@@ -5,7 +5,13 @@ import java.util.Queue;
 
 public class Patient implements Serializable {
     
-    private String name;
+    @Override
+	public String toString() {
+		return "Patient [name=" + name + ", cpf=" + cpf + ", password=" + password + ", status=" + status
+				+ ", currentVitalSigns=" + currentVitalSigns + ", last10VitalSigns=" + last10VitalSigns + "]";
+	}
+
+	private String name;
     private String cpf;
     private String password;
     private Status status;

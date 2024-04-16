@@ -64,7 +64,12 @@ public class RegisterThread extends Thread {
             vs.setGlucoseRate(scan.nextInt());
             scan.nextLine();
 
-            registerPatient(new Patient(name, cpf, password, status, vs));
+            try {
+				registerPatient(new Patient(name, cpf, password, status, vs));
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
             System.out.println("---------------------------------------------------");
             
@@ -74,8 +79,9 @@ public class RegisterThread extends Thread {
 
     }
 
-    public void registerPatient(Patient newPatient) {
+    public void registerPatient(Patient newPatient) throws Exception {
         Server.patients.put(newPatient.getCpf(), newPatient);
+        Server.salvarLista();
         System.out.println("---------------------------------------------------");
         System.out.println("Paciente cadastrado com sucesso.");
     }
