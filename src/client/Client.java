@@ -24,7 +24,7 @@ public class Client {
         Client.rd = new SecureRandom();
 
         try {
-            Registry refServer = LocateRegistry.getRegistry("localhost", 5001);
+            Registry refServer = LocateRegistry.getRegistry("192.168.137.1", 5001);
             server = (ServerInterface) refServer.lookup("Server");
 
             while (!isMonitoring) {

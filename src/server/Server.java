@@ -30,15 +30,16 @@ public class Server implements ServerInterface {
 	}
 
 	@SuppressWarnings("unchecked")
-	public synchronized void carregarLista() throws Exception {
+	public static synchronized void carregarLista() throws Exception {
+		
+		//new ObjectOutputStream(new FileOutputStream(arquivo));
 		try (FileInputStream fileIn = new FileInputStream(arquivo);
 				ObjectInputStream in = new ObjectInputStream(fileIn)) {
 			patients = (HashMap<String, Patient>) in.readObject();
 			System.out.println("Patients:");
 			for (Map.Entry<String, Patient> entry : patients.entrySet()) {
-				System.out.println("Nome: " + entry.getValue().getName() + " CPF: " + entry.getValue().getCpf());
-//				System.out.println(entry.getValue().toString());
-				System.out.println();
+				System.out.println(entry.getValue().getName() + ", CPF: " + entry.getValue().getCpf());
+				System.out.println(entry.getValue().toString());
 			}
 		} catch (IOException |
 
@@ -64,7 +65,7 @@ public class Server implements ServerInterface {
 			ServerInterface refServer = (ServerInterface) UnicastRemoteObject.exportObject(server, 0);
 
 			LocateRegistry.createRegistry(5001);
-			Registry reg = LocateRegistry.getRegistry("localhost", 5001);
+			Registry reg = LocateRegistry.getRegistry("192.168.137.1", 5001);
 			reg.bind("Server", refServer);
 
 			Thread registerThread = new RegisterThread();
@@ -106,6 +107,12 @@ public class Server implements ServerInterface {
 	@Override
 	public Patient admitPatient(String cpf, String password) throws RemoteException {
 
+		try {
+			carregarLista();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		for (Entry<String, Patient> pat : patients.entrySet()) {
 			if (pat.getKey().equals(cpf) && pat.getValue().getPassword().equals(password)) {
 				System.out.println("---------------------------------------------------");

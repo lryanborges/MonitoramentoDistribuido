@@ -82,6 +82,7 @@ public class RegisterThread extends Thread {
     public void registerPatient(Patient newPatient) throws Exception {
         Server.patients.put(newPatient.getCpf(), newPatient);
         Server.salvarLista();
+        Server.carregarLista();
         System.out.println("---------------------------------------------------");
         System.out.println("Paciente cadastrado com sucesso.");
     }
